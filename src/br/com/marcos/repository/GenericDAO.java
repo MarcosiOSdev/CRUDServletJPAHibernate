@@ -9,7 +9,7 @@ public abstract class GenericDAO<T, ID extends Serializable> implements Reposito
 	
 	private final static String UNIT_NAME="TestePU";
 	
-	protected EntityManager em;
+	private EntityManager em;
 	private Class<T> entityClass;
 	
 	public GenericDAO(Class<T> entityClass) {
@@ -21,36 +21,45 @@ public abstract class GenericDAO<T, ID extends Serializable> implements Reposito
 	}
 	
 	public void save(T entity){
-		em.persist(entity);
+		getEm().persist(entity);
 	}
 	
 	protected void delete(Object id, Class<T> classe){
-		T entityToBeRemoved = em.getReference(classe, id);
-		em.remove(entityToBeRemoved);
+		T entityToBeRemoved = getEm().getReference(classe, id);
+		getEm().remove(entityToBeRemoved);
 	}
 	
 	public T update(T entity){
-		return em.merge(entity);
+		return getEm().merge(entity);
 	}
 	
 	public T findByID(ID id){
-		return em.find(entityClass, id);
+		return getEm().find(entityClass, id);
 	}
 	
 	// Using the unchecked because JPA does not have a
     // em.getCriteriaBuilder().createQuery()<T> method
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<T> findAll() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEm().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        return em.createQuery(cq).getResultList();
+        return getEm().createQuery(cq).getResultList();
     }
     
    @SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<T> findAll(int begin, int end) {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEm().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        return em.createQuery(cq).setFirstResult(begin).setMaxResults(end).getResultList();
+        return getEm().createQuery(cq).setFirstResult(begin).setMaxResults(end).getResultList();
     }
+
+   public EntityManager getEm() {
+	   return em;
+   }
+
+   public void setEm(EntityManager em) {
+	   this.em = em;
+   }
 	
+   
 }
