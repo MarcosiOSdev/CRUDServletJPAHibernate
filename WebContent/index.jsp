@@ -9,7 +9,11 @@
 <body>
 
 	<h3>Sistema de Usuário</h3><br />
-	<a href="createUser?cmd=inserir">Inserir Funcionario</a>
+	
+	<a href="create_user.jsp">Inserir Usuário</a> <br />
+	
+	<a href="FindUser?cmd=findAll"> Buscando todos os Usuários</a>
+	
 
 
 </body>
