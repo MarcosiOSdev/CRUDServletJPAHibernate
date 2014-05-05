@@ -55,10 +55,7 @@ public class UserBusiness {
 
 	public User update(User user)throws Exception {
 		if(all(user))
-			if(findUserByLogin(user.getLogin()) == null )
 				return userRepository.update(user);
-			else
-				throw new Exception();
 		else
 			throw new Exception();
 	}
